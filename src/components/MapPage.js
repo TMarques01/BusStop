@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot, addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
+import { collection, onSnapshot} from 'firebase/firestore';
 import L from 'leaflet';
 
 function MapView() {
@@ -18,15 +19,15 @@ function MapView() {
   });
   
   const busPinIcon = L.icon({
-    iconUrl: '/pinBus.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
+      iconUrl: '/pinBus.png',
+      iconSize: [20, 40], 
+      iconAnchor: [16, 48],
   });
 
   const [tempPin, setTempPin] = useState(null);
-
   // Obter localização do usuário
   useEffect(() => {
+    // Obter localização atual
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const latLng = [position.coords.latitude, position.coords.longitude];
@@ -45,19 +46,18 @@ function MapView() {
   // Carregar pins ativos do Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "pins"), (snapshot) => {
-      const activePins = snapshot.docs
-        .filter(doc => doc.data().isActive)
-        .map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-            displayTime: data.timestamp?.seconds 
-              ? new Date(data.timestamp.seconds * 1000).toLocaleTimeString()
-              : new Date(data.clientTimestamp).toLocaleTimeString()
-          };
-        });
-      setPins(activePins);
+      const newPins = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          // Garante que temos sempre um timestamp válido para mostrar
+          displayTime: data.timestamp?.seconds 
+            ? new Date(data.timestamp.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : new Date(data.clientTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+      });
+      setPins(newPins);
     });
 
     return () => unsubscribe();
@@ -94,7 +94,8 @@ function MapView() {
 
   if (!userLocation) return <p>A localizar utilizador...</p>;
 
-  return (
+
+return (
     <div style={{ position: "relative" }}>
       <MapContainer center={userLocation} zoom={20} style={{ height: "90vh", width: "100%" }}>
         <TileLayer
@@ -110,96 +111,54 @@ function MapView() {
             </Popup>
           </Marker>
         ))}
+        {/* Mapa com Leaflet */}
+        <MapContainer center={userLocation} zoom={20} style={{ height: "90vh", width: "100%" }}>
+            <TileLayer
+                attribution='&copy; OpenStreetMap'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            
+            {pins.map((pin) => (
+                <Marker key={pin.id} position={[pin.lat, pin.lng]}>
+                    <Popup>
+                        Autocarro: {pin.bus_name}<br />
+                        Hora: {new Date(pin.timestamp?.seconds * 1000).toLocaleTimeString()}
+                    </Popup>
+                </Marker>
+            ))}
 
-        {tempPin && (
-          <Marker
-            position={[tempPin.lat, tempPin.lng]}
-            icon={userPinIcon}
-            interactive={false}
-          />
-        )}
-      </MapContainer>
+            {tempPin && (
+            <Marker
+                position={[tempPin.lat, tempPin.lng]}
+                icon={customPinIcon}
+                interactive={false}
+            />
+            )}
+
+        </MapContainer>
     
-      <button 
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          padding: "15px",
-          backgroundColor: "#7E57C2",
-          color: "white",
-          border: "none",
-          borderRadius: "50%",
-          cursor: "pointer",
-          width: "50px",
-          height: "50px",
-          zIndex: 1000
-        }}
-        onClick={() => setShowPopup(true)}
-      >
-        +
-      </button>
-
-      {showPopup && (
-        <div style={{
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-          zIndex: 1001
-        }}>
-          <h3>Inserir Autocarro</h3>
-          <input
-            type="text"
-            value={busId}
-            onChange={(e) => setBusId(e.target.value)}
-            placeholder="ID do Autocarro"
+        {/* Botão no canto inferior direito */}
+        <button 
             style={{
-              padding: "8px",
-              margin: "10px 0",
-              width: "100%",
-              boxSizing: "border-box"
-            }}
-          />
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button 
-              onClick={() => {
-                setBusId('');
-                setShowPopup(false);
-              }}
-              style={{
-                padding: "8px 16px",
-                marginRight: "8px",
-                backgroundColor: "#f0f0f0",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
-            >
-              Cancelar
-            </button>
-            <button 
-              onClick={handleAddBus}
-              style={{
-                padding: "8px 16px",
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                padding: "15px", // Ajusta o padding para manter o botão proporcional
                 backgroundColor: "#007bff",
                 color: "white",
                 border: "none",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
-            >
-              Confirmar
-            </button>
-          </div>
-        </div>
-      )}
+                borderRadius: "50%", // Torna o botão redondo
+                cursor: "pointer",
+                width: "50px", // Define largura fixa
+                height: "50px" // Define altura fixa
+            }}
+            onClick={() => alert('Botão clicado!')}
+        >
+        +
+        </button>
+
     </div>
-  );
+);
 }
 
 export default MapView;

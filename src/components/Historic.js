@@ -1,35 +1,49 @@
-import React from 'react';
-import './HistoricPage.css'; // Arquivo de estilos específico (opcional)
-import BusPin from './BusPin';
+import React, { useEffect, useState } from 'react';
 import './HistoricPage.css';
+import BusPin from './BusPin';
+import { db } from '../firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 function HistoryPage() {
-	const busStops = [
-		{ busNumber: '34T', time: '11:40', streetName: 'Rua da Sofia, nº227' },
-		{ busNumber: '22', time: '12:15', streetName: 'Avenida Central, nº45' },
-		{ busNumber: '12', time: '13:30', streetName: 'Praça do Município' },
-	  ];
+  const [busStops, setBusStops] = useState([]);
 
-  return (
-    <div className="history-page">
-      <div className="history-content">
-		<div className="history-header">
-			<h1>Histórico</h1>
-			<p>Os pins existentes</p>
-		<div className="bus-pins-container">
-			{busStops.map((stop, index) => (
-				<BusPin 
-				key={index}
-				busNumber={stop.busNumber}
-				time={stop.time}
-				streetName={stop.streetName}
-				/>
-			))}
-			</div>
-			</div>
-		</div>
-	</div>
-  );
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'pins'), (snapshot) => {
+      const fetchedBusStops = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        busNumber: doc.data().bus_name,
+        time: new Date(doc.data().timestamp?.seconds * 1000).toLocaleTimeString(),
+        date: new Date(doc.data().timestamp?.seconds * 1000).toLocaleDateString(),
+      }));
+      setBusStops(fetchedBusStops);
+    });
+
+    return () => unsubscribe(); // Cleanup para evitar vazamentos de memória
+    }, []);
+
+    return (
+        <div className="history-page">
+            <div className="history-content">
+                <div className="history-header">
+                <h1>Histórico</h1>
+                <p>Os pins existentes</p>
+                <div className="bus-pins-container">
+                    {busStops.length > 0 ? (
+                    busStops.map((stop) => (
+                        <BusPin
+                        key={stop.id}
+                        busNumber={stop.busNumber}
+                        time={`${stop.date} ${stop.time.slice(0, 5)}`}
+                        />
+                    ))
+                    ) : (
+                    <p>Nenhum registro encontrado.</p>
+                    )}
+                </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default HistoryPage;
