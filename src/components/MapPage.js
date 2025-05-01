@@ -2,10 +2,35 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot} from 'firebase/firestore';
+import L from 'leaflet';
 
 function MapView() {
   const [pins, setPins] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
+  const customPinIcon = L.icon({
+    iconUrl: '/pinPessoa.png', // caminho relativo à public/
+    iconSize: [32, 32], // tamanho do ícone
+    iconAnchor: [16, 32], // ponto de ancoragem (base do pin)
+  });
+
+  const [tempPin, setTempPin] = useState(null);
+  useEffect(() => {
+    // Obter localização atual
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latLng = [position.coords.latitude, position.coords.longitude];
+        setUserLocation(latLng);
+        setTempPin({ lat: latLng[0], lng: latLng[1] });
+      },
+      (error) => {
+        console.error("Erro ao obter localização:", error);
+        const fallback = [38.7169, -9.1399];
+        setUserLocation(fallback);
+        setTempPin({ lat: fallback[0], lng: fallback[1] });
+      }
+    );
+  }, []);
 
   useEffect(() => {
     // Ligar à base de dados Firestore
@@ -20,11 +45,13 @@ function MapView() {
     return () => unsubscribe();
   }, []);
 
+  if (!userLocation) return <p>A localizar utilizador...</p>;
+
 
 return (
     <div style={{ position: "relative" }}>
         {/* Mapa com Leaflet */}
-        <MapContainer center={[38.7169, -9.1399]} zoom={13} style={{ height: "90vh", width: "100%" }}>
+        <MapContainer center={userLocation} zoom={20} style={{ height: "90vh", width: "100%" }}>
             <TileLayer
                 attribution='&copy; OpenStreetMap'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -38,6 +65,15 @@ return (
                     </Popup>
                 </Marker>
             ))}
+
+            {tempPin && (
+            <Marker
+                position={[tempPin.lat, tempPin.lng]}
+                icon={customPinIcon}
+                interactive={false}
+            />
+            )}
+
         </MapContainer>
     
         {/* Botão no canto inferior direito */}
