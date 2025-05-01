@@ -1,0 +1,22 @@
+/* components/MenuBar.css */
+.menu-bar {
+	background-color: #7E57C2;
+	padding: 1rem;
+  }
+  
+  .menu-bar ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	gap: 1rem;
+  }
+  
+  .menu-bar a {
+	color: white;
+	text-decoration: none;
+  }
+  
+  .menu-bar a:hover {
+	color: #61dafb;
+  }
