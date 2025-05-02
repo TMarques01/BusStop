@@ -6,9 +6,8 @@ function MenuBar() {
   return (
     <nav className="menu-bar">
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/map">Mapa</a></li>
-        <li><a href="/about">Sobre</a></li>
+        <li><a href="/">Mapa</a></li>
+        <li><a href="/history">Histórico</a></li>
       </ul>
     </nav>
   );
