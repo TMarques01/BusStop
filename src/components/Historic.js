@@ -35,7 +35,7 @@ function HistoryPage() {
                     busStops.map((stop) => (
                         <BusPin
                         key={stop.id}
-                        busNumber={stop.busNumber}
+                        busNumber={stop.busNumber > 3 ? stop.busNumber : stop.busNumber.slice(0, 3)}
                         time={`${stop.date} ${stop.time.slice(0, 5)}`}
                         />
                     ))
