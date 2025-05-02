@@ -26,7 +26,6 @@ function HistoryPage() {
             <div className="history-content">
                 <div className="history-header">
                 <h1>Histórico</h1>
-                <p>Os pins existentes</p>
                 <div className="bus-pins-container">
                     {busStops.length > 0 ? (
                     busStops.map((stop) => (
