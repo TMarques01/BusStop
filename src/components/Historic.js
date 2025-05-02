@@ -15,8 +15,7 @@ function HistoryPage() {
       <div className="history-content">
 		<div className="history-header">
 			<h1>Histórico</h1>
-			{/* Adicione aqui o conteúdo do histórico */}
-			<p>Os teus pins</p>
+			<p>Os pins existentes</p>
 		<div className="bus-pins-container">
 			{busStops.map((stop, index) => (
 				<BusPin 

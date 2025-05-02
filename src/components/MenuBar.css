@@ -1,22 +1,65 @@
-/* components/MenuBar.css */
 .menu-bar {
 	background-color: #7E57C2;
-	padding: 1rem;
-  }
-  
-  .menu-bar ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
+	padding: 1rem 2rem;
 	display: flex;
-	gap: 1rem;
+	justify-content: space-between; /* Crucial para alinhar os itens nas extremidades */
+	align-items: center;
+	flex-wrap: nowrap; /* Impede quebra de linha */
   }
   
-  .menu-bar a {
+  .menu-items {
+	display: flex;
+	gap: 1.5rem;
+	flex-shrink: 0; /* Impede que os links encolham */
+  }
+  
+  .menu-items a {
 	color: white;
 	text-decoration: none;
+	padding: 0.5rem 0;
+	white-space: nowrap; /* Evita quebra de texto */
   }
   
-  .menu-bar a:hover {
-	color: #61dafb;
+
+  .search-container {
+	display: flex;
+	margin-left: auto; /* Empurra para a direita */
+	min-width: 150px; /* Largura mínima */
+  }
+  
+  .search-input {
+	padding: 8px 12px;
+	border: none;
+	border-radius: 10px 0 0 10px;
+	width: 75%;
+	max-width: 100px; /* Largura máxima */
+	outline: none;
+  }
+  
+  .search-button {
+	padding: 8px 12px;
+	border: none;
+	background-color: white;
+	color: white;
+	border-radius: 0 10px 10px 0;
+	cursor: pointer;
+	outline: none;
+  }
+  
+  
+  
+  /* Responsividade para telas menores */
+  @media (max-width: 768px) {
+	.menu-bar {
+	  flex-direction: row; /* Mantém linha única */
+	  padding: 1rem;
+	}
+	
+	.menu-items {
+	  gap: 0.8rem;
+	}
+	
+	.search-container {
+	  min-width: 150px;
+	}
   }
