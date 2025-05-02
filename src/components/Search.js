@@ -52,7 +52,7 @@ function SearchResultsPage() {
             {busStops.map((stop, index) => (
               <BusPin
                 key={index}
-                busNumber={busNumber}
+                busNumber={busNumber > 3 ? busNumber : busNumber.slice(0, 3)}
                 time={`${stop.date} ${stop.time.slice(0, 5)}`}
               />
             ))}

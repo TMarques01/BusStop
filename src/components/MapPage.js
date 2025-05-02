@@ -126,7 +126,7 @@ function MapView() {
           bottom: "20px",
           right: "20px",
           padding: "15px",
-          backgroundColor: "#7E57C2",
+          backgroundColor: "#7441CD",
           color: "white",
           border: "none",
           borderRadius: "50%",
@@ -186,7 +186,7 @@ function MapView() {
               onClick={handleAddBus}
               style={{
                 padding: "8px 16px",
-                backgroundColor: "#007bff",
+                backgroundColor: '#7E57C2',
                 color: "white",
                 border: "none",
                 borderRadius: "4px",
