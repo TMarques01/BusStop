@@ -18,9 +18,9 @@ function MapView() {
   });
   
   const busPinIcon = L.icon({
-    iconUrl: '/pinBus.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
+      iconUrl: '/pinBus.png',
+      iconSize: [20, 40], 
+      iconAnchor: [16, 48],
   });
 
   const [tempPin, setTempPin] = useState(null);
@@ -50,8 +50,8 @@ function MapView() {
           ...data,
           // Garante que temos sempre um timestamp válido para mostrar
           displayTime: data.timestamp?.seconds 
-            ? new Date(data.timestamp.seconds * 1000).toLocaleTimeString()
-            : new Date(data.clientTimestamp).toLocaleTimeString()
+            ? new Date(data.timestamp.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : new Date(data.clientTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
       });
       setPins(newPins);
