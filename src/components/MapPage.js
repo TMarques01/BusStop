@@ -113,7 +113,7 @@ function MapView() {
           bottom: "20px",
           right: "20px",
           padding: "15px",
-          backgroundColor: "#007bff",
+          backgroundColor: "#7E57C2",
           color: "white",
           border: "none",
           borderRadius: "50%",
