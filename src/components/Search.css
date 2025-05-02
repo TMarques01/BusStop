@@ -1,24 +1,20 @@
 .search-results-page {
+	background-color: #EDEDED;
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
   }
   
   .results-content {
+	margin-left: 5%;
 	margin-top: 60px;
 	padding: 20px;
   }
-  
-  .results-content h1 {
-	color: #333;
-	margin-bottom: 20px;
-  }
-  
+
   .results-list {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
-	max-width: 600px;
 	margin: 0 auto;
   }
   
