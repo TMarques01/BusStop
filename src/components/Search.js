@@ -28,11 +28,12 @@ function SearchResultsPage() {
           id: doc.id,
           time: new Date(doc.data().timestamp?.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           date: new Date(doc.data().timestamp?.seconds * 1000).toLocaleDateString(),
+          timestamp: doc.data().timestamp?.seconds || 0,
         }));
 
         // Ordenar os resultados por hora em ordem decrescente
-        const sortedStops = fetchedBusStops.sort((a, b) => b.time.localeCompare(a.time));
-        setBusStops(sortedStops);
+        const sortedBusStops = fetchedBusStops.sort((a, b) => b.timestamp - a.timestamp);
+        setBusStops(sortedBusStops);
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }

@@ -14,7 +14,11 @@ function HistoryPage() {
         busNumber: doc.data().bus_name,
         time: new Date(doc.data().timestamp?.seconds * 1000).toLocaleTimeString(),
         date: new Date(doc.data().timestamp?.seconds * 1000).toLocaleDateString(),
+        timestamp: doc.data().timestamp?.seconds || 0,
       }));
+
+      const sortedBusStops = fetchedBusStops.sort((a, b) => b.timestamp - a.timestamp);
+
       setBusStops(fetchedBusStops);
     });
 
