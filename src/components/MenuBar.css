@@ -45,6 +45,10 @@
 	cursor: pointer;
 	outline: none;
   }
+
+  .menu-item.active {
+	font-weight: bold; /* Negrito para o item ativo */
+  }
   
   
   
