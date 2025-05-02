@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { db } from '../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 import MenuBar from './Menu';
 import BusPin from './BusPin';
 import './Search.css';
@@ -19,22 +17,29 @@ function SearchResultsPage() {
       const bus = searchParams.get('bus');
       setBusNumber(bus);
 
-    const mockData = {
-      '34': [
-        { time: '11:40', streetName: 'Rua da Sofia, nº227' },
-        { time: '09:15', streetName: 'Avenida Liberdade, nº100' }
-      ],
-      '22': [
-        { time: '12:15', streetName: 'Avenida Central, nº45' },
-        { time: '08:30', streetName: 'Praça do Comércio' }
-      ]
-    }
+      if (!bus) return;
 
-	const sortedStops = (mockData[bus] || []).sort((a, b) => {
-		return b.time.localeCompare(a.time); // Ordem decrescente
-	  });
+      try {
+        // Query para buscar os dados na base de dados
+        const q = query(collection(db, 'pins'), where('bus_name', '==', bus));
+        const querySnapshot = await getDocs(q);
 
-    setBusStops(sortedStops);
+        const fetchedBusStops = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          time: new Date(doc.data().timestamp?.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          date: new Date(doc.data().timestamp?.seconds * 1000).toLocaleDateString(),
+          timestamp: doc.data().timestamp?.seconds || 0,
+        }));
+
+        // Ordenar os resultados por hora em ordem decrescente
+        const sortedBusStops = fetchedBusStops.sort((a, b) => b.timestamp - a.timestamp);
+        setBusStops(sortedBusStops);
+      } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+      }
+    };
+
+    fetchBusStops();
   }, [location.search]);
 
   return (
@@ -48,8 +53,7 @@ function SearchResultsPage() {
               <BusPin
                 key={index}
                 busNumber={busNumber}
-                time={stop.time}
-                streetName={stop.streetName}
+                time={`${stop.date} ${stop.time.slice(0, 5)}`}
               />
             ))}
           </div>
