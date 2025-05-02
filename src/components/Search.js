@@ -27,7 +27,7 @@ function SearchResultsPage() {
         const fetchedBusStops = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           time: new Date(doc.data().timestamp?.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          date: new Date(doc.data().timestamp?.seconds * 1000).toLocaleTimeString(),
+          date: new Date(doc.data().timestamp?.seconds * 1000).toLocaleDateString(),
         }));
 
         // Ordenar os resultados por hora em ordem decrescente
@@ -52,7 +52,7 @@ function SearchResultsPage() {
               <BusPin
                 key={index}
                 busNumber={busNumber}
-                time={`${stop.date} ${stop.time}`}
+                time={`${stop.date} ${stop.time.slice(0, 5)}`}
               />
             ))}
           </div>
