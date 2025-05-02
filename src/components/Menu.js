@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate, useLocation  } from 'react-router-dom';
 import './MenuBar.css';
 
 function MenuBar() {
@@ -7,6 +7,11 @@ function MenuBar() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [searchResult, setSearchResult] = useState(null);
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	const isActive = (path) => {
+		return location.pathname === path;
+	  };
 
 	const handleSearch = () => {
 		console.log('Buscando: ', searchQuery);
@@ -18,8 +23,8 @@ function MenuBar() {
   return (
     <nav className="menu-bar">
       <div className="menu-items">
-        <Link to="/map">Mapa</Link>
-        <Link to="/history">Histórico</Link>
+        <Link to="/map" className={`menu-item ${isActive('/map') ? 'active' : ''}`}>Mapa</Link>
+        <Link to="/history" className={`menu-item ${isActive('/history') ? 'active' : ''}`}>Histórico</Link>
       </div>
       
       <div className="search-container">

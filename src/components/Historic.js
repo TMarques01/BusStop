@@ -30,13 +30,12 @@ function HistoryPage() {
             <div className="history-content">
                 <div className="history-header">
                 <h1>Histórico</h1>
-                <p>Os pins existentes</p>
                 <div className="bus-pins-container">
                     {busStops.length > 0 ? (
                     busStops.map((stop) => (
                         <BusPin
                         key={stop.id}
-                        busNumber={stop.busNumber}
+                        busNumber={stop.busNumber > 3 ? stop.busNumber : stop.busNumber.slice(0, 3)}
                         time={`${stop.date} ${stop.time.slice(0, 5)}`}
                         />
                     ))

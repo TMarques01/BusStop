@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 import L from 'leaflet';
 
 function MapView() {
@@ -18,13 +18,14 @@ function MapView() {
   });
   
   const busPinIcon = L.icon({
-      iconUrl: '/pinBus.png',
-      iconSize: [20, 40], 
-      iconAnchor: [16, 48],
+    iconUrl: '/pinBus.png',
+    iconSize: [20, 40],
+    iconAnchor: [16, 32],
   });
 
   const [tempPin, setTempPin] = useState(null);
 
+  // Obter localização do usuário
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -41,37 +42,49 @@ function MapView() {
     );
   }, []);
 
+  // Carregar pins ativos do Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "pins"), (snapshot) => {
-      const newPins = snapshot.docs.map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          ...data,
-          // Garante que temos sempre um timestamp válido para mostrar
-          displayTime: data.timestamp?.seconds 
-            ? new Date(data.timestamp.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : new Date(data.clientTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
-      });
-      setPins(newPins);
+      const activePins = snapshot.docs
+        .filter(doc => doc.data().isActive)
+        .map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            displayTime: data.timestamp?.seconds 
+              ? new Date(data.timestamp.seconds * 1000).toLocaleTimeString()
+              : new Date(data.clientTimestamp).toLocaleTimeString()
+          };
+        });
+      setPins(activePins);
     });
 
     return () => unsubscribe();
   }, []);
 
+  // Adicionar novo autocarro
   const handleAddBus = async () => {
     if (!busId.trim() || !tempPin) return;
     
     try {
-      await addDoc(collection(db, "pins"), {
+      // Adiciona novo pin com isActive: true
+      const newPinRef = await addDoc(collection(db, "pins"), {
         bus_name: busId,
         lat: tempPin.lat,
         lng: tempPin.lng,
         timestamp: serverTimestamp(),
-        clientTimestamp: new Date().toISOString()
+        clientTimestamp: new Date().toISOString(),
+        isActive: true
       });
-      
+
+      // Agenda a desativação após 30 segundos
+      setTimeout(async () => {
+        await updateDoc(doc(db, "pins", newPinRef.id), {
+          isActive: false
+        });
+      }, 30000);
+
       setBusId('');
       setShowPopup(false);
     } catch (error) {
@@ -93,7 +106,7 @@ function MapView() {
           <Marker key={pin.id} position={[pin.lat, pin.lng]} icon={busPinIcon}>
             <Popup>
               Autocarro: {pin.bus_name}<br />
-              Hora: {pin.displayTime || 'A carregar...'}
+              Hora: {pin.displayTime}
             </Popup>
           </Marker>
         ))}
