@@ -19,7 +19,7 @@ function MapView() {
   
   const busPinIcon = L.icon({
     iconUrl: '/pinBus.png',
-    iconSize: [32, 32],
+    iconSize: [20, 40],
     iconAnchor: [16, 32],
   });
 
