@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+### BuzStop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![BuzStop Logo](./public/capa.png)
 
-## Available Scripts
+## Problema
 
-In the project directory, you can run:
+Atualmente, muitas aplicações de transporte público dependem de integrações com os sistemas das transportadoras, como GPS instalados nos autocarros ou APIs fornecidas pelas próprias operadoras. No entanto, essas soluções são limitadas a zonas urbanas onde tais sistemas estão implementados e atualizados. Em muitas localidades — especialmente zonas suburbanas e rurais — os passageiros continuam sem saber se o autocarro irá chegar a horas ou se já passou. Esta falta de informação causa frustração e perda de tempo para os utilizadores.
 
-### `npm start`
+## Solução
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+A nossa aplicação oferece uma abordagem descentralizada e colaborativa, onde qualquer utilizador pode reportar a passagem de um autocarro em tempo real. Esses registos alimentam um mapa interativo acessível a todos, que permite visualizar a localização recente de autocarros e prever possíveis atrasos. Esta solução não depende de hardware específico nos veículos nem de parcerias com transportadoras, tornando-a escalável e funcional em qualquer parte do país. É uma forma simples, inclusiva e eficaz de melhorar a experiência de quem usa transporte público.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tecnologias Utilizadas
 
-### `npm test`
+# Frontend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**ReactJS** – Construção da interface web
 
-### `npm run build`
+**React Router** – Navegação entre páginas (Mapa e Histórico)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Leaflet.js + React-Leaflet** – Mapa interativo com marcadores
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Geolocation API** – Obtenção da localização atual do utilizador
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Backend
 
-### `npm run eject`
+**Firebase Firestore** – Base de dados em tempo real
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Mockups e Design
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Figma** – Prototipagem e mockups da interface
