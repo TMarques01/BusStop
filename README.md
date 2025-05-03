@@ -1,31 +1,45 @@
-### BuzStop
+# BuzStop
 
 ![BuzStop Logo](./public/capa.png)
 
-## Problema
+## O Problema
 
-Atualmente, muitas aplicações de transporte público dependem de integrações com os sistemas das transportadoras, como GPS instalados nos autocarros ou APIs fornecidas pelas próprias operadoras. No entanto, essas soluções são limitadas a zonas urbanas onde tais sistemas estão implementados e atualizados. Em muitas localidades — especialmente zonas suburbanas e rurais — os passageiros continuam sem saber se o autocarro irá chegar a horas ou se já passou. Esta falta de informação causa frustração e perda de tempo para os utilizadores.
+Atualmente, muitas aplicações de transporte público dependem de integrações com sistemas das transportadoras, como GPS instalados nos autocarros ou APIs fornecidas pelas operadoras. Contudo, essas soluções são limitadas a zonas urbanas onde tais sistemas estão implementados e atualizados. Em muitas localidades — especialmente em áreas suburbanas e rurais — os passageiros continuam sem acesso a informações confiáveis sobre horários ou atrasos. Essa falta de transparência resulta em frustração, perda de tempo e uma experiência negativa para os utilizadores.
 
-## Solução
+## A Solução
 
-A nossa aplicação oferece uma abordagem descentralizada e colaborativa, onde qualquer utilizador pode reportar a passagem de um autocarro em tempo real. Esses registos alimentam um mapa interativo acessível a todos, que permite visualizar a localização recente de autocarros e prever possíveis atrasos. Esta solução não depende de hardware específico nos veículos nem de parcerias com transportadoras, tornando-a escalável e funcional em qualquer parte do país. É uma forma simples, inclusiva e eficaz de melhorar a experiência de quem usa transporte público.
+O BuzStop é uma aplicação inovadora que adota uma abordagem descentralizada e colaborativa. Qualquer utilizador pode reportar, em tempo real, a passagem de um autocarro, contribuindo para um mapa interativo acessível a todos. Este mapa permite visualizar a localização recente dos autocarros e prever atrasos, melhorando significativamente a experiência dos passageiros. A solução não depende de hardware específico nos veículos nem de parcerias com transportadoras, o que a torna altamente escalável e aplicável em qualquer região. É uma forma simples, inclusiva e eficaz de transformar o transporte público.
 
 ## Tecnologias Utilizadas
 
-# Frontend
+### Frontend
 
-**ReactJS** – Construção da interface web
+- **ReactJS**: Desenvolvimento da interface web.
+- **React Router**: Navegação entre páginas (Mapa e Histórico).
+- **Leaflet.js + React-Leaflet**: Implementação de mapas interativos com marcadores.
+- **Geolocation API**: Obtenção da localização atual do utilizador.
 
-**React Router** – Navegação entre páginas (Mapa e Histórico)
+### Backend
 
-**Leaflet.js + React-Leaflet** – Mapa interativo com marcadores
+- **Firebase Firestore**: Base de dados em tempo real para armazenamento e sincronização de dados.
 
-**Geolocation API** – Obtenção da localização atual do utilizador
+### Design e Prototipagem
 
-## Backend
+- **Figma**: Criação de mockups e protótipos da interface.
 
-**Firebase Firestore** – Base de dados em tempo real
+## Como Executar o Projeto
 
-## Mockups e Design
+1. **Configuração Inicial**:
+    - Instale o React.
+    - Configure uma base de dados Firebase e associe-a ao ficheiro `src/firebase.js`.
 
-**Figma** – Prototipagem e mockups da interface
+2. **Instalar Dependências**:
+    ```bash
+    npm install react-leaflet leaflet
+    npm install firebase
+    ```
+
+3. **Executar o Código**:
+    ```bash
+    npm start
+    ```
